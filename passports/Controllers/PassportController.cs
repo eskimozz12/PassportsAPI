@@ -20,8 +20,8 @@ namespace passports.Controllers
 
         [HttpGet("{series}/{number}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Passports>> GetInactivePassportAsync(int series, int number)
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<PassportsInfo>> GetInactivePassportAsync(int series, int number)
         {
 
             var session = await _passportService.GetInactivePassportAsync(series, number);
@@ -32,20 +32,30 @@ namespace passports.Controllers
             else return Ok(session);
         }
 
-        [HttpGet("{date}")]
+        [HttpGet("history/{date}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<List<HistoryItem>> GetHistoryAsync(DateTime date)
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<List<PassportsInfo>>> GetHistoryAsync(DateTime date)
         {
-            return await _passportService.GetHistoryAsync(date);
+            var session = await _passportService.GetHistoryAsync(date);
+            if (session.Count == 0)
+            {
+                return NotFound();
+            }
+            else return Ok(session);
         }
 
-        [HttpGet("history{series}/{number}")]
+        [HttpGet("history/{series}/{number}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<List<HistoryItem>> GetHistoryAsync(int series, int number)
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<List<PassportsInfo>>> GetHistoryAsync(int series, int number)
         {
-            return await _passportService.GetHistoryAsync(series, number);
+            var session = await _passportService.GetHistoryAsync(series, number);
+            if (session.Count == 0)
+            {
+                return NotFound();
+            }
+            else return Ok(session);
         }
 
     }

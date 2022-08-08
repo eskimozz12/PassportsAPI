@@ -2,10 +2,10 @@
 {
     public interface IPassportService
     {
-        Task<Passports?> GetInactivePassportAsync(int series, int number);
+        Task<PassportsInfo?> GetInactivePassportAsync(int series, int number);
 
-        Task<List<HistoryItem>> GetHistoryAsync(int series, int number);
+        Task<List<PassportsInfo>> GetHistoryAsync(int series, int number);
 
-        Task<List<HistoryItem>> GetHistoryAsync(DateTime date);
+        Task<List<PassportsInfo>> GetHistoryAsync(DateTime date);
     }
 }
