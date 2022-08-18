@@ -9,7 +9,7 @@ namespace PassportsAPI.EfCore
 
         }
        
-        public DbSet<InactivePassports> IanctivePassports { get; set; }
+        public DbSet<InactivePassports> InanctivePassports { get; set; }
         public DbSet<PassportsHistory> PassportsHistory { get; set; }
     }
 }
