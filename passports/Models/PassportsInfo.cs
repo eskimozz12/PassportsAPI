@@ -7,6 +7,5 @@
         public bool IsActive { get; set; }
         public DateTime ChangeTime { get; set; }
 
-
     }
 }
