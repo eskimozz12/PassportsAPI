@@ -12,8 +12,6 @@ namespace PassportsAPI.EfCore
         public int Number { get; set; }
         public bool IsActive { get; set; } = false;
         public DateTime ChangeTime { get; set; }
-        [MaxLength(5)]
-        public List<PassportsHistory> History { get; set; }
 
     }
 }

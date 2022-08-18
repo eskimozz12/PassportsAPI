@@ -6,7 +6,7 @@ namespace passports.Services.PassportService
 {
     public class PassportService : IPassportService
     {
-
+        /*
         private static List<PassportsInfo> pass = new List<PassportsInfo>
         {
             new PassportsInfo{Series = 1111, Number = 123451, ChangeTime = new DateTime(2022, 8, 8), IsActive = false},
@@ -18,7 +18,7 @@ namespace passports.Services.PassportService
             new PassportsInfo{Series = 1121, Number = 123451, ChangeTime = new DateTime(2022, 9, 8), IsActive = false},
             new PassportsInfo{Series = 3221, Number = 123451, ChangeTime = new DateTime(2022, 8, 8), IsActive = false},
             new PassportsInfo{Series = 1111, Number = 123451, ChangeTime = new DateTime(2022, 9, 8), IsActive = true}
-        };
+        }; */
 
         private readonly DataContext _context;
         private readonly IMapper _mapper;
@@ -28,36 +28,24 @@ namespace passports.Services.PassportService
             _mapper = mapper;
         }
 
-        public Task<List<PassportsInfo>> GetHistoryAsync(int series, int number)
+        public async Task<List<PassportsInfo>> GetHistoryAsync(int series, int number)
         {
-            var result = _context.PassportsHistory.Where(m => m.Series == series && m.Number == number).Select(m => new PassportsInfo
-            {
-                Series = m.Series,
-                Number = m.Number,
-                IsActive = m.IsActive,
-                ChangeTime = m.ChangeTime
-            }).ToList();
-            return Task.FromResult(result);
+            var result = await _context.PassportsHistory.Include(m => m.Passport).Where(m => m.Passport.Series == series && m.Passport.Number == number).ToListAsync();
+            return _mapper.Map<List<PassportsInfo>>(result);
         }
 
-        public Task<List<PassportsInfo>> GetHistoryAsync(DateTime date)
+        public async Task<List<PassportsInfo>> GetHistoryAsync(DateTime date)
         {
-            var result = _context.PassportsHistory.Where(x => x.ChangeTime == date).Select(m => new PassportsInfo
-            {
-                Series = m.Series,
-                Number = m.Number,
-                IsActive = m.IsActive,
-                ChangeTime = m.ChangeTime
-            }).ToList();
-            return Task.FromResult(result);
 
+            var result = await _context.PassportsHistory.Include(m => m.Passport).Where(x => x.ChangeTime == date.ToUniversalTime()).ToListAsync();
+            return _mapper.Map<List<PassportsInfo>>(result);
         }
 
-        public Task<InactivePassports> GetInactivePassportAsync(int series, int number)
+        public async Task<PassportsInfo> GetInactivePassportAsync(int series, int number)
         {
-            var tmp = _context.IanctivePassports.Where(m => m.Series == series && m.Number == number);
-            var result = _mapper.Map<InactivePassports>(tmp);
-            return Task.FromResult(result);
+            var tmp = await _context.IanctivePassports.FirstOrDefaultAsync(m => m.Series == series && m.Number == number);
+            var result = _mapper.Map<PassportsInfo>(tmp);
+            return result;
         }
     }
 }

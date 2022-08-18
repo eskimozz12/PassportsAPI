@@ -20,7 +20,7 @@ namespace passports.Controllers
         [HttpGet("{series}/{number}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<InactivePassports>> GetInactivePassportAsync(int series, int number)
+        public async Task<ActionResult<PassportsInfo>> GetInactivePassportAsync(int series, int number)
         {
             var session = await _passportService.GetInactivePassportAsync(series, number);
             if (session == null)

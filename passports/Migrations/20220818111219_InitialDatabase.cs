@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace PassportsAPI.Migrations
 {
-    public partial class InitalDatabase : Migration
+    public partial class InitialDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,6 +18,7 @@ namespace PassportsAPI.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Series = table.Column<int>(type: "integer", nullable: false),
                     Number = table.Column<int>(type: "integer", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
                     ChangeTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -31,26 +32,25 @@ namespace PassportsAPI.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Series = table.Column<int>(type: "integer", nullable: false),
-                    Number = table.Column<int>(type: "integer", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
                     ChangeTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    InactivePassportsid = table.Column<int>(type: "integer", nullable: true)
+                    PassportId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_history", x => x.id);
                     table.ForeignKey(
-                        name: "FK_history_passports_InactivePassportsid",
-                        column: x => x.InactivePassportsid,
+                        name: "FK_history_passports_PassportId",
+                        column: x => x.PassportId,
                         principalTable: "passports",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_history_InactivePassportsid",
+                name: "IX_history_PassportId",
                 table: "history",
-                column: "InactivePassportsid");
+                column: "PassportId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

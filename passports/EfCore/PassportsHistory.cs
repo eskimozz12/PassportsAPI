@@ -8,9 +8,9 @@ namespace PassportsAPI.EfCore
     {
         [Required]
         public int id { get; set; }
-        public int Series { get; set; }
-        public int Number { get; set; }
         public bool IsActive { get; set; }
         public DateTime ChangeTime { get; set; }
+        public int PassportId { get; set; }
+        public InactivePassports Passport { get; set; }
     }
 }

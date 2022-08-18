@@ -29,6 +29,11 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-app.Seed();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<DataContext>();
+    db.Database.Migrate();
+}
 
 app.Run();

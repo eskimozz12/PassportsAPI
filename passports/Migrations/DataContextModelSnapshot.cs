@@ -58,35 +58,28 @@ namespace PassportsAPI.Migrations
                     b.Property<DateTime>("ChangeTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("InactivePassportsid")
-                        .HasColumnType("integer");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("Number")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Series")
+                    b.Property<int>("PassportId")
                         .HasColumnType("integer");
 
                     b.HasKey("id");
 
-                    b.HasIndex("InactivePassportsid");
+                    b.HasIndex("PassportId");
 
                     b.ToTable("history");
                 });
 
             modelBuilder.Entity("PassportsAPI.EfCore.PassportsHistory", b =>
                 {
-                    b.HasOne("PassportsAPI.EfCore.InactivePassports", null)
-                        .WithMany("History")
-                        .HasForeignKey("InactivePassportsid");
-                });
+                    b.HasOne("PassportsAPI.EfCore.InactivePassports", "Passport")
+                        .WithMany()
+                        .HasForeignKey("PassportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("PassportsAPI.EfCore.InactivePassports", b =>
-                {
-                    b.Navigation("History");
+                    b.Navigation("Passport");
                 });
 #pragma warning restore 612, 618
         }
