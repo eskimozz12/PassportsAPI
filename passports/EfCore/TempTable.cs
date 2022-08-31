@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PassportsAPI.EfCore
 {
-    [Table("passports")]
-    public class InactivePassports
+    [Table("temptable")]
+    public class TempTable
     {
         [Required]
         public int id { get; set; }
@@ -12,10 +12,5 @@ namespace PassportsAPI.EfCore
         public int Series { get; set; }
         [Column("number")]
         public int Number { get; set; }
-        [Column("isactive")]
-        public bool IsActive { get; set; } = false;
-        [Column("changetime")]
-        public DateTime ChangeTime { get; set; }
-
     }
 }

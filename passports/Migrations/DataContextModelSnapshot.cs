@@ -31,18 +31,25 @@ namespace PassportsAPI.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
 
                     b.Property<DateTime>("ChangeTime")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("changetime");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("isactive");
 
                     b.Property<int>("Number")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("number");
 
                     b.Property<int>("Series")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("series");
 
                     b.HasKey("id");
+
+                    b.HasIndex("Series", "Number")
+                        .IsUnique();
 
                     b.ToTable("passports");
                 });
@@ -56,19 +63,46 @@ namespace PassportsAPI.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
 
                     b.Property<DateTime>("ChangeTime")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("changetime");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("isactive");
 
                     b.Property<int>("PassportId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("passportid");
 
                     b.HasKey("id");
 
                     b.HasIndex("PassportId");
 
                     b.ToTable("history");
+                });
+
+            modelBuilder.Entity("PassportsAPI.EfCore.TempTable", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
+
+                    b.Property<int>("Number")
+                        .HasColumnType("integer")
+                        .HasColumnName("number");
+
+                    b.Property<int>("Series")
+                        .HasColumnType("integer")
+                        .HasColumnName("series");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("Series", "Number")
+                        .IsUnique();
+
+                    b.ToTable("temptable");
                 });
 
             modelBuilder.Entity("PassportsAPI.EfCore.PassportsHistory", b =>
