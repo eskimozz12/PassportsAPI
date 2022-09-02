@@ -4,6 +4,7 @@ using PassportsAPI.EfCore;
 using Microsoft.EntityFrameworkCore;
 using Quartz;
 using PassportsAPI.Quartz;
+using PassportsAPI.Services.PostgresService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("PassportsDb")));
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<IPassportService, PassportService>();
+builder.Services.AddScoped<PostgresService>();
 
 builder.Services.AddQuartz(options =>
 {
