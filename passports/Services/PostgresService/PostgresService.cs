@@ -14,7 +14,8 @@ namespace PassportsAPI.Services.PostgresService
 
         public async Task BeginUpdateAsync()
         {
-            await _context.Database.ExecuteSqlRawAsync("COPY temptable(series, number) FROM 'Data/data.csv' DELIMITER ',' CSV HEADER; ");
+            string path = Path.GetFullPath("Data\\data.csv");
+            await _context.Database.ExecuteSqlRawAsync("COPY temptable(series, number) FROM '"+ path +"' DELIMITER ',' CSV HEADER; ");
         }
         public async Task UploadAsync()
         {
@@ -22,14 +23,14 @@ namespace PassportsAPI.Services.PostgresService
             {
                 var sb = new StringBuilder();
                 sb.AppendLine("INSERT INTO passports(series,number,isactive,changetime)");
-                sb.AppendLine(" SELECT series, number,'false', now() FROM temptable");
+                sb.AppendLine(" SELECT series, number,'false', now()::timestamp FROM temptable");
                 sb.AppendLine("ON CONFLICT (series, number) WHERE isactive = 'true' DO UPDATE");
-                sb.AppendLine(" SET isactive = 'false', changetime = now()");
+                sb.AppendLine(" SET isactive = 'false', changetime = now()::timestamp");
 
                 await _context.Database.ExecuteSqlRawAsync(sb.ToString());
 
                 sb.Clear();
-                sb.AppendLine("UPDATE passports SET isactive = 'true', changetime = now() WHERE(series, number) NOT IN(SELECT series, number FROM temptable)");
+                sb.AppendLine("UPDATE passports SET isactive = 'true', changetime = now()::timestamp WHERE(series, number) NOT IN(SELECT series, number FROM temptable)");
 
                 await _context.Database.ExecuteSqlRawAsync(sb.ToString());
 

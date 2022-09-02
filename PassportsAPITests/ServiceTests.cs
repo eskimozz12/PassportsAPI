@@ -2,7 +2,6 @@ using NUnit.Framework;
 using AutoMapper;
 using PassportsAPI.Mapper;
 using PassportsAPI.EfCore;
-using passports.Models;
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.InMemory;
@@ -15,7 +14,6 @@ namespace PassportsAPITests
 {
     public class Tests
     {
-        public DateTime date = new DateTime(2022, 8, 8);
         private DataContext? _dbContext;
         private PassportService? _provider;
         private IMapper? _mapper;
@@ -142,7 +140,7 @@ namespace PassportsAPITests
                 {
                     id = 1,
                     IsActive = false,
-                    ChangeTime = new DateTime(2022, 8, 8),
+                    ChangeTime = new DateTime(2022, 8, 8).ToUniversalTime(),
                     PassportId = 1,
                     Passport = new InactivePassports()
                     {
@@ -150,16 +148,16 @@ namespace PassportsAPITests
                         Series = 1234,
                         Number = 123456,
                         IsActive = false,
-                        ChangeTime = new DateTime(2022, 8, 8)
+                        ChangeTime = new DateTime(2022, 8, 8).ToUniversalTime()
                     }
                 });
 
             _dbContext?.SaveChanges();
-            var result = await _provider.GetHistoryAsync(date);
+            var result = await _provider.GetHistoryAsync(new DateTime(2022, 8, 8).ToUniversalTime());
 
 
             Assert.AreEqual(false, result[0].IsActive);
-            Assert.AreEqual(new DateTime(2022, 8, 8), result[0].ChangeTime);
+            Assert.AreEqual(new DateTime(2022, 8, 8).ToUniversalTime(), result[0].ChangeTime);
 
 
         }
@@ -171,7 +169,7 @@ namespace PassportsAPITests
                  {
                      id = 1,
                      IsActive = false,
-                     ChangeTime = new DateTime(2022, 8, 8),
+                     ChangeTime = new DateTime(2022, 8, 8).ToUniversalTime(),
                      PassportId = 1,
                      Passport = new InactivePassports()
                      {
@@ -179,12 +177,12 @@ namespace PassportsAPITests
                          Series = 1234,
                          Number = 123456,
                          IsActive = false,
-                         ChangeTime = new DateTime(2022, 8, 8)
+                         ChangeTime = new DateTime(2022, 8, 8).ToUniversalTime()
                      }
-                 });
+                 }) ;
 
             _dbContext?.SaveChanges();
-            var result = await _provider.GetHistoryAsync(new DateTime(2022, 8, 8));
+            var result = await _provider.GetHistoryAsync(new DateTime(2022, 8, 9));
 
 
             Assert.IsEmpty(result);

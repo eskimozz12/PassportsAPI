@@ -78,7 +78,7 @@ namespace PassportsAPITests
             Assert.That(mapped.Series, Is.EqualTo(1234));
             Assert.That(mapped.Number, Is.EqualTo(123456));
             Assert.That(mapped.IsActive, Is.False);
-            Assert.That(mapped.ChangeTime, Is.EqualTo(new DateTime(2022, 8, 8)));
+            Assert.That(mapped.ChangeTime, Is.EqualTo(new DateTime(2022, 8, 9)));
 
         }
     }
