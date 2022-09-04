@@ -1,21 +1,18 @@
 ﻿using PassportsAPI.EfCore;
 using Quartz;
-using Microsoft.EntityFrameworkCore;
-using Npgsql;
-using PassportsAPI.Services.PostgresService;
+using PassportsAPI.Services.PassportUpdateService;
 
 namespace PassportsAPI.Quartz
 {
     public class ImportJob : IJob
     {
-        private readonly DataContext _context;
-        private readonly ILogger<ImportJob> _logger;
-        private readonly PostgresService _repository;
 
-        public ImportJob(ILogger<ImportJob> logger, DataContext context, PostgresService repository)
+        private readonly ILogger<ImportJob> _logger;
+        private readonly IPassportUpdateService _repository;
+
+        public ImportJob(ILogger<ImportJob> logger, IPassportUpdateService repository)
         {
             _logger = logger;
-            _context = context;
             _repository = repository;
         }
 
@@ -34,7 +31,7 @@ namespace PassportsAPI.Quartz
             }
             catch(Exception e)
             {
-                _logger.LogError(e, "There was a mistake while imorting data");
+                _logger.LogError(e, "There was an error while importing data");
             }
         }
     }

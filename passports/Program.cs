@@ -4,7 +4,7 @@ using PassportsAPI.EfCore;
 using Microsoft.EntityFrameworkCore;
 using Quartz;
 using PassportsAPI.Quartz;
-using PassportsAPI.Services.PostgresService;
+using PassportsAPI.Services.PassportUpdateService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,17 +18,18 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("PassportsDb")));
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<IPassportService, PassportService>();
-builder.Services.AddScoped<PostgresService>();
+builder.Services.AddScoped<IPassportUpdateService,PassportUpdateService>();
 
 builder.Services.AddQuartz(options =>
 {
 options.UseMicrosoftDependencyInjectionJobFactory();
-var jobKey = new JobKey("ImportJob1");
+    var setting = builder.Configuration.GetSection("Schedule");
+    var jobKey = new JobKey("ImportJob1");
 options.AddJob<ImportJob>(opts => opts.WithIdentity(jobKey));
-options.AddTrigger(opts => opts
-    .ForJob(jobKey)
-    .WithIdentity("ImportJob1-trigger")
-    .WithCronSchedule("0 0/1 * * * ?"));
+    options.AddTrigger(opts => opts
+        .ForJob(jobKey)
+        .WithIdentity("ImportJob1-trigger")
+        .WithCronSchedule(setting["ImportPassportsJob"]));
 
 });
 

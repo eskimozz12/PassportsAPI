@@ -44,7 +44,7 @@ namespace PassportsAPITests
 
             };
 
-            var mapped = _mapper.Map<PassportsInfo>(inactivePaspports);
+            var mapped = _mapper!.Map<PassportsInfo>(inactivePaspports);
 
             Assert.That(mapped, Is.Not.Null);
             Assert.That(mapped.Series, Is.EqualTo(1234));
@@ -72,7 +72,7 @@ namespace PassportsAPITests
                 }
             };
 
-            var mapped = _mapper.Map<PassportsInfo>(paspportsHistory);
+            var mapped = _mapper!.Map<PassportsInfo>(paspportsHistory);
 
             Assert.That(mapped, Is.Not.Null);
             Assert.That(mapped.Series, Is.EqualTo(1234));

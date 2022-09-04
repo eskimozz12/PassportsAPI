@@ -52,7 +52,7 @@ namespace PassportsAPITests
             { id = 1, Series = 1234, Number = 123456, IsActive = false, ChangeTime = new DateTime(2022, 8, 8) });
 
             _dbContext?.SaveChanges();
-            var result = await _provider.GetInactivePassportAsync(1234,123456);
+            var result = await _provider!.GetInactivePassportAsync(1234,123456);
 
 
             Assert.AreEqual(1234, result.Series);
@@ -69,7 +69,7 @@ namespace PassportsAPITests
             { id = 1, Series = 1234, Number = 123456, IsActive = false, ChangeTime = new DateTime(2022, 8, 8) });
 
             _dbContext?.SaveChanges();
-            var result = await _provider.GetInactivePassportAsync(5534, 123456);
+            var result = await _provider!.GetInactivePassportAsync(5534, 123456);
 
 
             Assert.Null(result);
@@ -97,7 +97,7 @@ namespace PassportsAPITests
                 });
 
             _dbContext?.SaveChanges();
-            var result = await _provider.GetHistoryAsync(1234, 123456);
+            var result = await _provider!.GetHistoryAsync(1234, 123456);
 
 
             Assert.AreEqual(false, result[0].IsActive);
@@ -125,7 +125,7 @@ namespace PassportsAPITests
                 });
 
             _dbContext?.SaveChanges();
-            var result = await _provider.GetHistoryAsync(5555, 123456);
+            var result = await _provider!.GetHistoryAsync(5555, 123456);
 
 
             Assert.IsEmpty(result);
@@ -153,7 +153,7 @@ namespace PassportsAPITests
                 });
 
             _dbContext?.SaveChanges();
-            var result = await _provider.GetHistoryAsync(new DateTime(2022, 8, 8).ToUniversalTime());
+            var result = await _provider!.GetHistoryAsync(new DateTime(2022, 8, 8).ToUniversalTime());
 
 
             Assert.AreEqual(false, result[0].IsActive);
@@ -182,7 +182,7 @@ namespace PassportsAPITests
                  }) ;
 
             _dbContext?.SaveChanges();
-            var result = await _provider.GetHistoryAsync(new DateTime(2022, 8, 9));
+            var result = await _provider!.GetHistoryAsync(new DateTime(2022, 8, 9));
 
 
             Assert.IsEmpty(result);

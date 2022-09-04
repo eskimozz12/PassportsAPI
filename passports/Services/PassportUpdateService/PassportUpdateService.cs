@@ -2,12 +2,12 @@
 using PassportsAPI.EfCore;
 using System.Text;
 
-namespace PassportsAPI.Services.PostgresService
+namespace PassportsAPI.Services.PassportUpdateService
 {
-    public class PostgresService
+    public class PassportUpdateService : IPassportUpdateService
     {
         private readonly DataContext _context;
-        public PostgresService(DataContext context)
+        public PassportUpdateService(DataContext context)
         {
             _context = context;
         }
